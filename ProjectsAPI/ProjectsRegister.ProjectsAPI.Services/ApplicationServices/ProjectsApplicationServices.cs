@@ -15,6 +15,6 @@ public class ProjectsApplicationServices : IProjectsApplicationServices
 
     public async Task<List<ResumedProjectDTO?>> GetAllProjects()
     {
-        List<ResumedProjectDTO> Projects = await _projectRepository.GetAllProjects().Select(new ).ToListAsync();
+        List<ResumedProjectDTO> Projects = await _projectRepository.GetAllProjects().Select.ToListAsync();
     }
 }
