@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using ProjectsAPI.Infraestructure.Context;
 using ProjectsRegister.ProjectsAPI.Infrastructure.Repositories;
 using ProjectsRegister.ProjectsAPI.Infrastructure.Repositories.IRepositories;
+using ProjectsRegister.ProjectsAPI.Services.ApplicationServices;
+using ProjectsRegister.ProjectsAPI.Services.ApplicationServices.IApplicationServices;
 using System.Globalization;
 
 namespace ProjectsRegister.ProjectsAPI.Interface
@@ -16,7 +18,17 @@ namespace ProjectsRegister.ProjectsAPI.Interface
             // Add services to the container.
             var connection = builder.Configuration["SqlServerConnection:SqlServerConnectionString"];
 
+            #region Repository Injection
+
             builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+
+            #endregion
+
+            #region ServiceInjection
+
+            builder.Services.AddScoped<IProjectsApplicationServices, ProjectsApplicationServices>();
+
+            #endregion
 
             builder.Services.AddDbContext<SqlServerContext>(options =>
                 options.UseSqlServer(connection, b => b.MigrationsAssembly("ProjectsRegister.ProjectsAPI.Infrastructure")));

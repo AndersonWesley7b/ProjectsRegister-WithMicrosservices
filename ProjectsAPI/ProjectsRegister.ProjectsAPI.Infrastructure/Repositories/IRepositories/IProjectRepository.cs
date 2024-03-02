@@ -9,7 +9,9 @@ public interface IProjectRepository
 
     Task<Project?> GetProjectById(Guid _Id);
 
-    void AddProject(Project _Project);
+    Task AddProject(Project _Project);
 
-    void DeleteProjectById(Guid _Id);
+    Task DeleteProjectById(Guid _Id);
+
+    Task CommitChanges();
 }

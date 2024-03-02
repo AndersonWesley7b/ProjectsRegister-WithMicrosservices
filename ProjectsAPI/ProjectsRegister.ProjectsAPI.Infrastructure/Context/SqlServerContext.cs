@@ -2,7 +2,7 @@
 using ProjectsRegister.ProjectsAPI.Domain.Entities;
 
 namespace ProjectsAPI.Infraestructure.Context;
-public class SqlServerContext : DbContext
+public sealed class SqlServerContext : DbContext
 {
     public SqlServerContext(DbContextOptions<SqlServerContext> options) : base(options)
     { }

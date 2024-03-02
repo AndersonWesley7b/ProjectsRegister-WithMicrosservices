@@ -20,11 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\ProjectsRegister.ProjectsAPI.Crosscutting\ProjectsRegister.ProjectsAPI.Crosscutting.csproj" />
     <ProjectReference Include="..\ProjectsRegister.ProjectsAPI.Infrastructure\ProjectsRegister.ProjectsAPI.Infrastructure.csproj" />
+    <ProjectReference Include="..\ProjectsRegister.ProjectsAPI.Services\ProjectsRegister.ProjectsAPI.Services.csproj" />
   </ItemGroup>
 
 </Project>

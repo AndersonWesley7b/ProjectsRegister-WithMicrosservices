@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectsRegister.ProjectsAPI.Domain.Entities;
-public class Project
+public sealed class Project
 {
     [Required]
     public Guid ProjectId { get; set; }

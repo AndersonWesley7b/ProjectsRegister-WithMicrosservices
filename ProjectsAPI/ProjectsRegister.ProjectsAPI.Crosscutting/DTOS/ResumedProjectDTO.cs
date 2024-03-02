@@ -1,5 +1,5 @@
 ﻿namespace ProjectsRegister.ProjectsAPI.Crosscutting.DTOS;
-public class ResumedProjectDTO
+public sealed class ResumedProjectDTO
 {
     public Guid ProjectId { get; set; }
 

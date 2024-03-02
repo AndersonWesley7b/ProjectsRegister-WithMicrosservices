@@ -5,7 +5,7 @@ using ProjectsRegister.ProjectsAPI.Infrastructure.Repositories.IRepositories;
 using ProjectsRegister.ProjectsAPI.Services.ApplicationServices.IApplicationServices;
 
 namespace ProjectsRegister.ProjectsAPI.Services.ApplicationServices;
-public sealed class ProjectsApplicationServices : IProjectsApplicationServices
+public sealed class ProjectsApplicationServices : BaseApplicationServices, IProjectsApplicationServices 
 {
     private readonly IProjectRepository _projectRepository;
 
@@ -13,6 +13,8 @@ public sealed class ProjectsApplicationServices : IProjectsApplicationServices
     {
         _projectRepository = projectRepository;
     }
+
+    #region Queries
 
     private IQueryable<ResumedProjectDTO> GetAllProjectsQuery()
     {
@@ -30,9 +32,47 @@ public sealed class ProjectsApplicationServices : IProjectsApplicationServices
 
     }
 
+    #endregion
+
+    #region DatabaseOperation
+
     public async Task<List<ResumedProjectDTO>> GetAllProjects()
     {
         List<ResumedProjectDTO> projects = await GetAllProjectsQuery().ToListAsync();
         return projects;
     }
+
+    public async Task CreateNewProject(FullProjectDTO _NewProject, bool _Commit = false)
+    {
+        NewProjectValidate(_NewProject);
+
+        Project project = new()
+        { 
+            Name = _NewProject.Name,
+            UserId = _NewProject.UserId,
+            CreatedOn = DateTime.UtcNow,
+            Description = _NewProject.Description,
+            ProjectLink = _NewProject.ProjectLink,
+            RepositoryLink = _NewProject.RepositoryLink,
+        };
+
+        ValidateModel(project);
+
+        await _projectRepository.AddProject(project);
+
+        if (_Commit)
+            await _projectRepository.CommitChanges();
+    }
+
+    #endregion
+
+    #region Validations
+    private static void NewProjectValidate(FullProjectDTO _NewProject)
+    {
+        if (Equals(_NewProject, null))
+            throw new Exception("Preencha os dados do projeto corretamente, para realizar um novo cadastro");
+    }
+
+    #endregion
+
 }

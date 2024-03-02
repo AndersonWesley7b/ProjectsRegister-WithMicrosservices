@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ProjectsRegister.ProjectsAPI.Domain.Entities;
-public class User
+public sealed class User
 {
     [Required]
     public int UserId { get; set; }

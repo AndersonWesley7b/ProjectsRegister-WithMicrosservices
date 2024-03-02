@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace ProjectsRegister.ProjectsAPI.Crosscutting.DTOS;
-public class FullProjectDTO
+public sealed class FullProjectDTO
 {
     public Guid ProjectId { get; set; }
 
