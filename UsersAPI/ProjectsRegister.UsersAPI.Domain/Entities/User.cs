@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ProjectsRegister.ProjectsAPI.Domain.Entities;
+namespace ProjectsRegister.UsersAPI.Domain.Entities;
 public sealed class User
 {
     [Required]

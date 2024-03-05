@@ -7,11 +7,13 @@ using ProjectsRegister.ProjectsAPI.Services.ApplicationServices.IApplicationServ
 namespace ProjectsRegister.ProjectsAPI.Services.ApplicationServices;
 public sealed class ProjectsApplicationServices : BaseApplicationServices, IProjectsApplicationServices 
 {
-    private readonly IProjectRepository _projectRepository;
+    private readonly IProjectsRepository _projectRepository;
+    private readonly IUsersApplicationServices _usersApplicationServices;
 
-    public ProjectsApplicationServices(IProjectRepository projectRepository)
+    public ProjectsApplicationServices(IProjectsRepository projectRepository, IUsersApplicationServices usersApplicationServices)
     {
         _projectRepository = projectRepository;
+        _usersApplicationServices = usersApplicationServices;
     }
 
     #region Queries
@@ -42,9 +44,10 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
         return projects;
     }
 
-    public async Task CreateNewProject(FullProjectDTO _NewProject, bool _Commit = false)
+    public async Task CreateNewProject(CreateProjectDTO _NewProject, bool _Commit = false)
     {
         NewProjectValidate(_NewProject);
+        _usersApplicationServices.CheckUserExists(_NewProject.UserId);
 
         Project project = new()
         { 
@@ -67,7 +70,7 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
     #endregion
 
     #region Validations
-    private static void NewProjectValidate(FullProjectDTO _NewProject)
+    private static void NewProjectValidate(CreateProjectDTO _NewProject)
     {
         if (Equals(_NewProject, null))
             throw new Exception("Preencha os dados do projeto corretamente, para realizar um novo cadastro");

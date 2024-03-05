@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using ProjectsAPI.Infraestructure.Context;
 using ProjectsRegister.ProjectsAPI.Infrastructure.Repositories;
 using ProjectsRegister.ProjectsAPI.Infrastructure.Repositories.IRepositories;
 using ProjectsRegister.ProjectsAPI.Services.ApplicationServices;
 using ProjectsRegister.ProjectsAPI.Services.ApplicationServices.IApplicationServices;
-using System.Globalization;
 
 namespace ProjectsRegister.ProjectsAPI.Interface
 {
@@ -18,9 +16,12 @@ namespace ProjectsRegister.ProjectsAPI.Interface
             // Add services to the container.
             var connection = builder.Configuration["SqlServerConnection:SqlServerConnectionString"];
 
+            builder.Services.AddDbContext<SqlServerContext>(options =>
+                options.UseSqlServer(connection, b => b.MigrationsAssembly("ProjectsRegister.ProjectsAPI.Infrastructure")));
+
             #region Repository Injection
 
-            builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+            builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 
             #endregion
 
@@ -30,8 +31,15 @@ namespace ProjectsRegister.ProjectsAPI.Interface
 
             #endregion
 
-            builder.Services.AddDbContext<SqlServerContext>(options =>
-                options.UseSqlServer(connection, b => b.MigrationsAssembly("ProjectsRegister.ProjectsAPI.Infrastructure")));
+            #region MicrosservicesInjection
+
+            builder.Services.AddHttpClient<IUsersApplicationServices, UsersApplicationServices>(c =>
+            {
+                var baseAddress = builder.Configuration["ServiceUrls:UsersAPI"];
+                c.BaseAddress = baseAddress != null ? new Uri(baseAddress) : null;
+            });
+
+            #endregion
 
             builder.Services.AddControllers();
 

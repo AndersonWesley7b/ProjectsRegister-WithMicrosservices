@@ -4,11 +4,11 @@ using ProjectsRegister.ProjectsAPI.Domain.Entities;
 using ProjectsRegister.ProjectsAPI.Infrastructure.Repositories.IRepositories;
 
 namespace ProjectsRegister.ProjectsAPI.Infrastructure.Repositories;
-public sealed class ProjectRepository : IProjectRepository
+public sealed class ProjectsRepository : IProjectsRepository
 {
     private readonly SqlServerContext _context;
 
-    public ProjectRepository(SqlServerContext context)
+    public ProjectsRepository(SqlServerContext context)
     {
         _context = context;   
     }
@@ -23,6 +23,12 @@ public sealed class ProjectRepository : IProjectRepository
         return _context.Projects;
     }
 
+    public async Task<Project?> GetProjectByIdReadOnly(Guid _Id)
+    {
+        return await _context.Projects.AsNoTracking().FirstOrDefaultAsync(x => x.ProjectId == _Id);
+    }
+
+
     public async Task<Project?> GetProjectById(Guid _Id)
     {
         return await _context.Projects.FirstOrDefaultAsync(x => x.ProjectId == _Id);
@@ -33,9 +39,9 @@ public sealed class ProjectRepository : IProjectRepository
         await _context.Projects.AddAsync(_Project);
     }
 
-    public async Task DeleteProjectById(Guid _Id)
+    public void DeleteProject(Project _Project)
     {
-        await GetProjectById(_Id);
+         _context.Projects.Remove(_Project);
     }
 
     public async Task CommitChanges()

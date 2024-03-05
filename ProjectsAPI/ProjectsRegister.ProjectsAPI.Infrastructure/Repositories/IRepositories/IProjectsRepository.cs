@@ -1,7 +1,7 @@
 ﻿using ProjectsRegister.ProjectsAPI.Domain.Entities;
 
 namespace ProjectsRegister.ProjectsAPI.Infrastructure.Repositories.IRepositories;
-public interface IProjectRepository
+public interface IProjectsRepository
 {
     IQueryable<Project?> GetAllProjectsReadOnly();
 
@@ -9,9 +9,11 @@ public interface IProjectRepository
 
     Task<Project?> GetProjectById(Guid _Id);
 
+    Task<Project?> GetProjectByIdReadOnly(Guid _Id);
+
     Task AddProject(Project _Project);
 
-    Task DeleteProjectById(Guid _Id);
+    void DeleteProject(Project _Project);
 
     Task CommitChanges();
 }

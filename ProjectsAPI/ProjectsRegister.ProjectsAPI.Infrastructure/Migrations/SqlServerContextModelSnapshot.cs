@@ -58,7 +58,7 @@ namespace ProjectsRegister.ProjectsAPI.Infrastructure.Migrations
 
                     b.HasKey("ProjectId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("ProjectsRegister.ProjectsAPI.Domain.Entities.User", b =>
@@ -79,7 +79,7 @@ namespace ProjectsRegister.ProjectsAPI.Infrastructure.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 #pragma warning restore 612, 618
         }

@@ -31,7 +31,7 @@ public class ProjectsController : ControllerBase
     }
 
 	[HttpPost("CreateNewProject")]
-	public async Task<IActionResult> CreateNewProject(FullProjectDTO _NewProject)
+	public async Task<IActionResult> CreateNewProject(CreateProjectDTO _NewProject)
 	{
 		try
 		{

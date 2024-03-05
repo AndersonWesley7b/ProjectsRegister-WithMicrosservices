@@ -1,8 +1,6 @@
 ﻿namespace ProjectsRegister.ProjectsAPI.Crosscutting.DTOS;
-public sealed class FullProjectDTO
+public sealed class CreateProjectDTO
 {
-    public Guid ProjectId { get; set; }
-
     public string Name { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;
@@ -12,8 +10,6 @@ public sealed class FullProjectDTO
     public string RepositoryLink { get; set; } = string.Empty;
 
     public string MediaLink { get; set; } = string.Empty;
-
-    public DateTime CreatedOn { get; set; }
 
     public int UserId { get; set; }
 
