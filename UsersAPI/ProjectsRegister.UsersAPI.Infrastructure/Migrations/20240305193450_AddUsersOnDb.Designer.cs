@@ -12,7 +12,7 @@ using UsersAPI.Infraestructure.Context;
 namespace ProjectsRegister.UsersAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(SqlServerContext))]
-    [Migration("20240304225217_AddUsersOnDb")]
+    [Migration("20240305193450_AddUsersOnDb")]
     partial class AddUsersOnDb
     {
         /// <inheritdoc />
@@ -27,11 +27,9 @@ namespace ProjectsRegister.UsersAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("ProjectsRegister.UsersAPI.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("About")
                         .IsRequired()

@@ -7,5 +7,5 @@ public interface IUsersApplicationServices
 
     Task CreateNewUser(CreateUserDTO _NewUser, bool _Commit);
 
-    Task CheckUserExists(Guid _UserId);
+    Task <bool>CheckUserExists(Guid _UserId);
 }

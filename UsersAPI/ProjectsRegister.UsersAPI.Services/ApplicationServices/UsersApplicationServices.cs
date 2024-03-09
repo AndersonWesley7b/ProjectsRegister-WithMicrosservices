@@ -62,10 +62,11 @@ public sealed class UsersApplicationServices : BaseApplicationServices, IUsersAp
             await _userRepository.CommitChanges();
     }
 
-    public async Task CheckUserExists(Guid _UserId)
+    public async Task<bool> CheckUserExists(Guid _UserId)
     {
-        if (!await _userRepository.CheckUserExists(_UserId))
-            throw new Exception("O usuário informado não existe!");
+        if (await _userRepository.CheckUserExists(_UserId))
+            return true;
+        return false;
     }
 
     #endregion
@@ -78,6 +79,9 @@ public sealed class UsersApplicationServices : BaseApplicationServices, IUsersAp
 
         if (_NewUser.BirthDate > DateTime.Today)
             throw new Exception("A data informada deve ser menor que a data atual!");
+
+        if (!EmailValidate(_NewUser.Email))
+            throw new Exception("Informe um e-mail válido!");
     }
 
     #endregion

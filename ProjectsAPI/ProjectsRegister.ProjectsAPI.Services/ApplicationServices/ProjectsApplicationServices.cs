@@ -47,7 +47,7 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
     public async Task CreateNewProject(CreateProjectDTO _NewProject, bool _Commit = false)
     {
         NewProjectValidate(_NewProject);
-        _usersApplicationServices.CheckUserExists(_NewProject.UserId);
+        await _usersApplicationServices.CheckUserExists(_NewProject.UserId);
 
         Project project = new()
         { 

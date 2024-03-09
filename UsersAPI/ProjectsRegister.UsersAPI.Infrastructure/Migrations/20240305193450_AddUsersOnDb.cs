@@ -15,8 +15,7 @@ namespace ProjectsRegister.UsersAPI.Infrastructure.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     About = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -27,13 +26,6 @@ namespace ProjectsRegister.UsersAPI.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
                 });
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "Users");
         }
     }
 }

@@ -24,11 +24,9 @@ namespace ProjectsRegister.UsersAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("ProjectsRegister.UsersAPI.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("About")
                         .IsRequired()

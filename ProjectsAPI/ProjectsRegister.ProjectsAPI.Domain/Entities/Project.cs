@@ -23,5 +23,5 @@ public sealed class Project
     public DateTime CreatedOn { get; set; }
 
     [ForeignKey(nameof(User))]
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
 }

@@ -14,6 +14,14 @@ namespace ProjectsRegister.ProjectsAPI.Interface
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.WithOrigins("http://localhost:5173")
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             var connection = builder.Configuration["SqlServerConnection:SqlServerConnectionString"];
 
             builder.Services.AddDbContext<SqlServerContext>(options =>
@@ -56,6 +64,8 @@ namespace ProjectsRegister.ProjectsAPI.Interface
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("MyPolicy");
+            app.UseRouting();
             app.UseAuthorization();
             app.MapControllers();
             app.Run();

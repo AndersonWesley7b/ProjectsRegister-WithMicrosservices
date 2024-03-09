@@ -48,8 +48,8 @@ public class UsersController : ControllerBase
     {
         try
         {
-            await _usersApplicationServices.CheckUserExists(UserId);
-            return Ok();
+            bool exists = await _usersApplicationServices.CheckUserExists(UserId);
+            return Ok(exists);
         }
         catch (Exception ex)
         {
