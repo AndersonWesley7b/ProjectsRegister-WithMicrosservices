@@ -12,4 +12,6 @@ public sealed class CreateProjectDTO
     public string MediaLink { get; set; } = string.Empty;
 
     public Guid UserId { get; set; }
+
+    public string UserName { get; set; } = string.Empty;
 }

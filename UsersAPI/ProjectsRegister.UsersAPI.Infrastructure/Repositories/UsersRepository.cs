@@ -38,6 +38,11 @@ public sealed class UsersRepository : IUsersRepository
         return await _context.Users.AsNoTracking().AnyAsync(x => x.UserId == _Id);
     }
 
+    public async Task<string> GetUserNameByIdReadOnly(Guid _Id)
+    {
+        return await _context.Users.AsNoTracking().Where(x => x.UserId == _Id).Select(x => x.UserName).FirstOrDefaultAsync() ?? string.Empty;
+    }
+
     public async Task AddUser(User _User)
     {
         await _context.Users.AddAsync(_User);

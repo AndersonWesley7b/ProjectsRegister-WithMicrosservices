@@ -8,4 +8,6 @@ public interface IUsersApplicationServices
     Task CreateNewUser(CreateUserDTO _NewUser, bool _Commit);
 
     Task <bool>CheckUserExists(Guid _UserId);
+
+    Task <string> GetUserNameByIdReadOnly(Guid _UserId);
 }

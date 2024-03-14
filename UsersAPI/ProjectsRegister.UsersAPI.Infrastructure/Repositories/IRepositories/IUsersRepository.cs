@@ -13,6 +13,8 @@ public interface IUsersRepository
 
     Task<bool> CheckUserExists(Guid _Id);
 
+    Task<string> GetUserNameByIdReadOnly(Guid _Id);
+
     Task AddUser(User _User);
 
     void DeleteUser(User _User);

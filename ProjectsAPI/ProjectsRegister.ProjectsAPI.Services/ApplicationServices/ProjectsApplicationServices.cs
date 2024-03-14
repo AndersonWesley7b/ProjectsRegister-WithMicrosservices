@@ -2,17 +2,18 @@
 using ProjectsRegister.ProjectsAPI.Crosscutting.DTOS;
 using ProjectsRegister.ProjectsAPI.Domain.Entities;
 using ProjectsRegister.ProjectsAPI.Infrastructure.Repositories.IRepositories;
+using ProjectsRegister.ProjectsAPI.Infrastructure.UnitOfWork.IUnitOfWork;
 using ProjectsRegister.ProjectsAPI.Services.ApplicationServices.IApplicationServices;
 
 namespace ProjectsRegister.ProjectsAPI.Services.ApplicationServices;
 public sealed class ProjectsApplicationServices : BaseApplicationServices, IProjectsApplicationServices 
 {
-    private readonly IProjectsRepository _projectRepository;
+    private readonly IProjectsUnitOfWork _uow;
     private readonly IUsersApplicationServices _usersApplicationServices;
 
-    public ProjectsApplicationServices(IProjectsRepository projectRepository, IUsersApplicationServices usersApplicationServices)
+    public ProjectsApplicationServices(IProjectsUnitOfWork uow, IUsersApplicationServices usersApplicationServices)
     {
-        _projectRepository = projectRepository;
+        _uow = uow;
         _usersApplicationServices = usersApplicationServices;
     }
 
@@ -20,7 +21,7 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
 
     private IQueryable<ResumedProjectDTO> GetAllProjectsQuery()
     {
-        IQueryable<Project?> queryProjects = _projectRepository.GetAllProjectsReadOnly();
+        IQueryable<Project?> queryProjects = _uow.projectRepository.GetAllProjectsReadOnly();
 
         IQueryable<ResumedProjectDTO> query = (from Project in queryProjects
                                                select new ResumedProjectDTO
@@ -28,6 +29,8 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
                                                    ProjectId = Project.ProjectId,
                                                    Name = Project.Name,
                                                    UserId = Project.UserId,
+                                                   UserName = Project.UserName,
+                                                   Description = Project.Description
                                                });
 
         return query;
@@ -40,7 +43,7 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
 
     public async Task<List<ResumedProjectDTO>> GetAllProjects()
     {
-        List<ResumedProjectDTO> projects = await GetAllProjectsQuery().ToListAsync();
+        var projects = await GetAllProjectsQuery().ToListAsync();
         return projects;
     }
 
@@ -53,6 +56,7 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
         { 
             Name = _NewProject.Name,
             UserId = _NewProject.UserId,
+            UserName = _NewProject.UserName,
             CreatedOn = DateTime.UtcNow,
             Description = _NewProject.Description,
             ProjectLink = _NewProject.ProjectLink,
@@ -61,10 +65,10 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
 
         ValidateModel(project);
 
-        await _projectRepository.AddProject(project);
+        await _uow.projectRepository.AddProject(project);
 
         if (_Commit)
-            await _projectRepository.CommitChanges();
+            await _uow.projectRepository.CommitChanges();
     }
 
     #endregion

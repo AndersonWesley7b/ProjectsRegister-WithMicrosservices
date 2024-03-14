@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectsRegister.ProjectsAPI.Infrastructure.UnitOfWork.IUnitOfWork;
 using ProjectsRegister.UsersAPI.Crosscutting.DTOS;
 using ProjectsRegister.UsersAPI.Domain.Entities;
 using ProjectsRegister.UsersAPI.Infrastructure.Repositories.IRepositories;
@@ -7,18 +8,18 @@ using ProjectsRegister.UsersAPI.Services.ApplicationServices.IApplicationService
 namespace ProjectsRegister.UsersAPI.Services.ApplicationServices;
 public sealed class UsersApplicationServices : BaseApplicationServices, IUsersApplicationServices 
 {
-    private readonly IUsersRepository _userRepository;
+    private readonly IUsersUnitOfWork _uow;
 
-    public UsersApplicationServices(IUsersRepository userRepository)
+    public UsersApplicationServices(IUsersUnitOfWork uow)
     {
-        _userRepository = userRepository;
+        _uow = uow;
     }
 
     #region Queries
 
     private IQueryable<SelectDTO> GetUsersForSelectQuery()
     {
-        IQueryable<User?> queryUsers = _userRepository.GetAllUsersReadOnly();
+        IQueryable<User?> queryUsers = _uow.userRepository.GetAllUsersReadOnly();
 
         IQueryable<SelectDTO> query = (from User in queryUsers
                                                select new SelectDTO
@@ -56,17 +57,23 @@ public sealed class UsersApplicationServices : BaseApplicationServices, IUsersAp
 
         ValidateModel(user);
 
-        await _userRepository.AddUser(user);
+        await _uow.userRepository.AddUser(user);
 
         if (_Commit)
-            await _userRepository.CommitChanges();
+            await _uow.userRepository.CommitChanges();
     }
 
     public async Task<bool> CheckUserExists(Guid _UserId)
     {
-        if (await _userRepository.CheckUserExists(_UserId))
+        if (await _uow.userRepository.CheckUserExists(_UserId))
             return true;
         return false;
+    }
+
+    public async Task<string> GetUserNameByIdReadOnly(Guid _Id)
+    {
+        string userName = await _uow.userRepository.GetUserNameByIdReadOnly(_Id);
+        return userName;
     }
 
     #endregion

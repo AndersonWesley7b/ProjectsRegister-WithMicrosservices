@@ -23,7 +23,7 @@ public sealed class UsersApplicationServices : IUsersApplicationServices
                 throw new Exception("Opa! Parece que tivemos um problema para acessar os usuários. Entre em contato com nosso suporte!");
 
             bool userExists = await response.Content.ReadFromJsonAsync<bool>();
-            if(!userExists)
+            if (!userExists)
                 throw new Exception("O usuário selecionado não existe");
 
         }

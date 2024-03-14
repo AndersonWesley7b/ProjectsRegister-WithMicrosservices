@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using ProjectsAPI.Infraestructure.Context;
 using ProjectsRegister.ProjectsAPI.Infrastructure.Repositories;
 using ProjectsRegister.ProjectsAPI.Infrastructure.Repositories.IRepositories;
+using ProjectsRegister.ProjectsAPI.Infrastructure.UnitOfWork;
+using ProjectsRegister.ProjectsAPI.Infrastructure.UnitOfWork.IUnitOfWork;
 using ProjectsRegister.ProjectsAPI.Services.ApplicationServices;
 using ProjectsRegister.ProjectsAPI.Services.ApplicationServices.IApplicationServices;
 
@@ -26,6 +28,10 @@ namespace ProjectsRegister.ProjectsAPI.Interface
 
             builder.Services.AddDbContext<SqlServerContext>(options =>
                 options.UseSqlServer(connection, b => b.MigrationsAssembly("ProjectsRegister.ProjectsAPI.Infrastructure")));
+
+            #region
+            builder.Services.AddTransient<IProjectsUnitOfWork, ProjectsUnitOfWork>();
+            #endregion
 
             #region Repository Injection
 

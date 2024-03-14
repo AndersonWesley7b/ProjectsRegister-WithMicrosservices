@@ -57,4 +57,18 @@ public class UsersController : ControllerBase
         }
     }
 
+    [HttpGet("GetUserNameByIdReadOnly/{UserId}")]
+    public async Task<IActionResult> GetUserNameByIdReadOnly(Guid UserId)
+    {
+        try
+        {
+            string userName = await _usersApplicationServices.GetUserNameByIdReadOnly(UserId);
+            return Ok(userName);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
 }

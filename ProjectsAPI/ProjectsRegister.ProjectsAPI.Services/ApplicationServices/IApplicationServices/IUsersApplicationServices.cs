@@ -2,4 +2,5 @@
 public interface IUsersApplicationServices
 {
     Task CheckUserExists(Guid _Id);
+
 }

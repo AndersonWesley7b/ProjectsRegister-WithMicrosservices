@@ -22,6 +22,10 @@ public sealed class Project
 
     public DateTime CreatedOn { get; set; }
 
-    [ForeignKey(nameof(User))]
+    [Required(ErrorMessage = "O usuário é obrigatório para o cadastro!")]
     public Guid UserId { get; set; }
+
+    [Required(ErrorMessage = "O usuário é obrigatório para o cadastro!")]
+    [StringLength(100)]
+    public string UserName { get; set; } = string.Empty;
 }
