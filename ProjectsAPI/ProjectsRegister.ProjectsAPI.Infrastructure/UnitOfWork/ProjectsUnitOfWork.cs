@@ -17,8 +17,6 @@ namespace ProjectsRegister.ProjectsAPI.Infrastructure.UnitOfWork
 
         public IProjectsRepository ProjectRepository => _projectRepository;
 
-        public IProjectsRepository projectRepository => throw new NotImplementedException();
-
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
     }

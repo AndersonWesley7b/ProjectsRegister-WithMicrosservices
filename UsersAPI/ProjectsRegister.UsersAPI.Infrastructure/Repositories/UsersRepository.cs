@@ -53,9 +53,4 @@ public sealed class UsersRepository : IUsersRepository
         _context.Users.Remove(_User);
     }
 
-    public async Task CommitChanges()
-    {
-        await _context.SaveChangesAsync();
-    }
-
 }

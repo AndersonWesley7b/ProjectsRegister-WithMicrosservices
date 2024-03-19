@@ -1,5 +1,7 @@
-﻿namespace ProjectsRegister.ProjectsAPI.Crosscutting.DTOS;
-public sealed class CreateProjectDTO
+﻿using ProjectsRegister.ProjectsAPI.Crosscutting.DTOS.Interfaces;
+
+namespace ProjectsRegister.ProjectsAPI.Crosscutting.DTOS;
+public sealed class CreateProjectDTO : IProjectDTO
 {
     public string Name { get; set; } = string.Empty;
 
@@ -12,6 +14,4 @@ public sealed class CreateProjectDTO
     public string MediaLink { get; set; } = string.Empty;
 
     public Guid UserId { get; set; }
-
-    public string UserName { get; set; } = string.Empty;
 }

@@ -43,6 +43,20 @@ public class UsersController : ControllerBase
 		}
 	}
 
+    [HttpPut("UpdateUser")]
+    public async Task<IActionResult> UpdateUser(FullUserDTO UpdateUser)
+    {
+        try
+        {
+            await _usersApplicationServices.UpdateUser(UpdateUser, true);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
     [HttpGet("CheckUserExists/{UserId}")]
     public async Task<IActionResult> CheckUserExists(Guid UserId)
     {

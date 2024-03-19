@@ -17,8 +17,6 @@ namespace UsersRegister.UsersAPI.Infrastructure.UnitOfWork
 
         public IUsersRepository UserRepository => _userRepository;
 
-        public IUsersRepository userRepository => throw new NotImplementedException();
-
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
     }

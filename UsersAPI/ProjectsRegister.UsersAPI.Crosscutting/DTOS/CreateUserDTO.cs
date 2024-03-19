@@ -1,5 +1,7 @@
-﻿namespace ProjectsRegister.UsersAPI.Crosscutting.DTOS;
-public class CreateUserDTO
+﻿using ProjectsRegister.UsersAPI.Crosscutting.DTOS.Interfaces;
+
+namespace ProjectsRegister.UsersAPI.Crosscutting.DTOS;
+public class CreateUserDTO : IUserDTO
 {
     public string UserName { get; set; } = string.Empty;
 

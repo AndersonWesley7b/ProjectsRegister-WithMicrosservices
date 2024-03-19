@@ -19,6 +19,4 @@ public interface IUsersRepository
 
     void DeleteUser(User _User);
 
-
-    Task CommitChanges();
 }

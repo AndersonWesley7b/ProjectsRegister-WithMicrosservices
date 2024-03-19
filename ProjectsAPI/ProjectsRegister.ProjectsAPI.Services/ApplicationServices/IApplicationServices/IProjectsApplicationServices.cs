@@ -6,4 +6,6 @@ public interface IProjectsApplicationServices
     Task<List<ResumedProjectDTO>> GetAllProjects();
 
     Task CreateNewProject(CreateProjectDTO _NewProject, bool _Commit);
+
+    Task UpdateProject(FullProjectDTO _NewProject, bool _Commit);
 }

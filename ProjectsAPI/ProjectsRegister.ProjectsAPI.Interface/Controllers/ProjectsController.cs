@@ -31,11 +31,25 @@ public class ProjectsController : ControllerBase
     }
 
 	[HttpPost("CreateNewProject")]
-	public async Task<IActionResult> CreateNewProject(CreateProjectDTO _NewProject)
+	public async Task<IActionResult> CreateNewProject(CreateProjectDTO NewProject)
 	{
 		try
 		{
-			await _projectsApplicationServices.CreateNewProject(_NewProject, true);
+			await _projectsApplicationServices.CreateNewProject(NewProject, true);
+			return Ok();
+		}
+		catch (Exception ex)
+		{
+			throw new Exception(ex.Message);
+		}
+	}
+	
+	[HttpPut("UpdateProject")]
+	public async Task<IActionResult> UpdateProject(FullProjectDTO UpdateProject)
+	{
+		try
+		{
+			await _projectsApplicationServices.UpdateProject(UpdateProject, true);
 			return Ok();
 		}
 		catch (Exception ex)

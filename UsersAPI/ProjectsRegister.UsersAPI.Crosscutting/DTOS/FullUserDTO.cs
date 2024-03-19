@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ProjectsRegister.UsersAPI.Crosscutting.DTOS.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectsRegister.UsersAPI.Crosscutting.DTOS;
-public sealed class FullUserDTO
+public sealed class FullUserDTO :IUserDTO
 {
     public Guid UserId { get; set; }
 

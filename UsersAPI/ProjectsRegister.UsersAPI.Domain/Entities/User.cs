@@ -18,6 +18,8 @@ public sealed class User
 
     public DateTime CreatedOn { get; set; }
 
+    public DateTime? LastUpdatedOn { get; set; }
+
     [Required]
     public DateTime BirthDate { get; set; }
 }

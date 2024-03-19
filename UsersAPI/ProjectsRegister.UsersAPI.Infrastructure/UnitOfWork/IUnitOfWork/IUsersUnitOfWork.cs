@@ -3,7 +3,7 @@
 namespace ProjectsRegister.ProjectsAPI.Infrastructure.UnitOfWork.IUnitOfWork;
 public interface  IUsersUnitOfWork
 {
-    IUsersRepository userRepository { get;}
+    IUsersRepository UserRepository { get;}
 
     Task SaveChangesAsync();
 }
