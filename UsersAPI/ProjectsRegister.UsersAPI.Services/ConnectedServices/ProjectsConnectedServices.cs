@@ -16,7 +16,7 @@ public sealed class ProjectsConnectedServices : IProjectsConnectedServices
     {
         try
         {
-            HttpResponseMessage response = await _client.GetAsync($"{BasePath}/DeleteProjectsByUserId/{_UserId}");
+            HttpResponseMessage response = await _client.DeleteAsync($"{BasePath}/DeleteProjectsByUserId/{_UserId}");
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception(await response.Content.ReadAsStringAsync() ?? "Houve um erro ao se conectar com o serviço de usuários!");

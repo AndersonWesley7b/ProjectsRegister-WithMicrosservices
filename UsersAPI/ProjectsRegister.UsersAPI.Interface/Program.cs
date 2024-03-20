@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectsRegister.ProjectsAPI.Infrastructure.UnitOfWork.IUnitOfWork;
+using ProjectsRegister.ProjectsAPI.Services.ConnectedServices;
 using ProjectsRegister.UsersAPI.Infrastructure.Repositories;
 using ProjectsRegister.UsersAPI.Infrastructure.Repositories.IRepositories;
 using ProjectsRegister.UsersAPI.Services.ApplicationServices;

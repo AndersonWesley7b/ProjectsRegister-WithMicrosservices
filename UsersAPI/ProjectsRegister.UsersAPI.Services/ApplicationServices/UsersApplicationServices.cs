@@ -111,11 +111,7 @@ public sealed class UsersApplicationServices : BaseApplicationServices, IUsersAp
     }
 
     public async Task<bool> CheckUserExists(Guid _UserId)
-    {
-        if (await _uow.UserRepository.CheckUserExists(_UserId))
-            return true;
-        return false;
-    }
+     => await _uow.UserRepository.CheckUserExists(_UserId);
 
     public async Task<string> GetUserNameByIdReadOnly(Guid _Id)
     {
