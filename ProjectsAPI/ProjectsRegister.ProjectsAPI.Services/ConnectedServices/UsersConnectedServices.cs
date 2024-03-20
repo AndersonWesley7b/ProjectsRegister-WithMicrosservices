@@ -1,14 +1,13 @@
-﻿using ProjectsRegister.ProjectsAPI.Services.ApplicationServices.IApplicationServices;
-using System.Net;
+﻿using ProjectsRegister.ProjectsAPI.Services.ConnectedServices.IConnectedServices;
 using System.Net.Http.Json;
 
-namespace ProjectsRegister.ProjectsAPI.Services.ApplicationServices;
-public sealed class UsersApplicationServices : IUsersApplicationServices
+namespace ProjectsRegister.ProjectsAPI.Services.ConnectedServices;
+public sealed class UsersConnectedServices : IUsersConnectedServices
 {
     private readonly HttpClient _client;
     public const string BasePath = "api/Users";
 
-    public UsersApplicationServices(HttpClient client)
+    public UsersConnectedServices(HttpClient client)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
     }

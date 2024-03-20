@@ -4,15 +4,18 @@ using ProjectsRegister.UsersAPI.Crosscutting.DTOS;
 using ProjectsRegister.UsersAPI.Crosscutting.DTOS.Interfaces;
 using ProjectsRegister.UsersAPI.Domain.Entities;
 using ProjectsRegister.UsersAPI.Services.ApplicationServices.IApplicationServices;
+using ProjectsRegister.UsersAPI.Services.ConnectedServices.IConnectedServices;
 
 namespace ProjectsRegister.UsersAPI.Services.ApplicationServices;
 public sealed class UsersApplicationServices : BaseApplicationServices, IUsersApplicationServices 
 {
     private readonly IUsersUnitOfWork _uow;
+    private readonly IProjectsConnectedServices _projectsConnectedServices;
 
-    public UsersApplicationServices(IUsersUnitOfWork uow)
+    public UsersApplicationServices(IUsersUnitOfWork uow, IProjectsConnectedServices projectsConnectedServices)
     {
         _uow = uow;
+        _projectsConnectedServices = projectsConnectedServices;
     }
 
     #region Queries
@@ -38,8 +41,16 @@ public sealed class UsersApplicationServices : BaseApplicationServices, IUsersAp
 
     public async Task<List<SelectDTO>> GetUsersForSelect()
     {
-        List<SelectDTO> Users = await GetUsersForSelectQuery().ToListAsync();
-        return Users;
+        try
+        {
+            List<SelectDTO> Users = await GetUsersForSelectQuery().ToListAsync();
+            return Users;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+        
     }
 
     public async Task CreateNewUser(CreateUserDTO _NewUser, bool _Commit = false)
@@ -84,6 +95,20 @@ public sealed class UsersApplicationServices : BaseApplicationServices, IUsersAp
             await _uow.SaveChangesAsync();
     }
 
+    public async Task DeleteUser(Guid _UserId, bool _Commit)
+    {
+        if (Equals(_UserId, Guid.Empty))
+            throw new Exception("O Id do projeto informado é inválido!");
+
+        User userToDelete = await _uow.UserRepository.GetUserById(_UserId) ?? throw new NullReferenceException("Selecione um usuário válido para excluir!");
+
+        await _projectsConnectedServices.DeleteProjectsByUserId(_UserId);
+
+        _uow.UserRepository.DeleteUser(userToDelete);
+
+        if (_Commit)
+            await _uow.SaveChangesAsync();
+    }
 
     public async Task<bool> CheckUserExists(Guid _UserId)
     {

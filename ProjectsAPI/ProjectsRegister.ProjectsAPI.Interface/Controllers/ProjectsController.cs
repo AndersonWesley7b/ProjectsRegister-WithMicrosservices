@@ -58,4 +58,32 @@ public class ProjectsController : ControllerBase
 		}
 	}
 
+    [HttpDelete("DeleteProject/{ProjectId}")]
+    public async Task<IActionResult> DeleteProject(Guid ProjectId)
+    {
+        try
+        {
+            await _projectsApplicationServices.DeleteProject(ProjectId, true);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    [HttpDelete("DeleteProjectsByUserId/{UserId}")]
+    public async Task<IActionResult> DeleteProjectsByUserId(Guid UserId)
+    {
+        try
+        {
+            await _projectsApplicationServices.DeleteProjectsByUserId(UserId);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
 }

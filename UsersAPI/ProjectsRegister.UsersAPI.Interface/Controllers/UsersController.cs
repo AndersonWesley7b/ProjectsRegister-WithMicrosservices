@@ -85,4 +85,18 @@ public class UsersController : ControllerBase
         }
     }
 
+    [HttpDelete("DeleteUser/{UserId}")]
+    public async Task<IActionResult> DeleteUser(Guid UserId)
+    {
+        try
+        {
+            await _usersApplicationServices.DeleteUser(UserId, true);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
 }

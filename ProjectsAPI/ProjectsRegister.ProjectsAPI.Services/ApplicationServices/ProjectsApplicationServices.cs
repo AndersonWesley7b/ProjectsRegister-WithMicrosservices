@@ -4,14 +4,15 @@ using ProjectsRegister.ProjectsAPI.Crosscutting.DTOS.Interfaces;
 using ProjectsRegister.ProjectsAPI.Domain.Entities;
 using ProjectsRegister.ProjectsAPI.Infrastructure.UnitOfWork.IUnitOfWork;
 using ProjectsRegister.ProjectsAPI.Services.ApplicationServices.IApplicationServices;
+using ProjectsRegister.ProjectsAPI.Services.ConnectedServices.IConnectedServices;
 
 namespace ProjectsRegister.ProjectsAPI.Services.ApplicationServices;
-public sealed class ProjectsApplicationServices : BaseApplicationServices, IProjectsApplicationServices 
+public sealed class ProjectsApplicationServices : BaseApplicationServices, IProjectsApplicationServices
 {
     private readonly IProjectsUnitOfWork _uow;
-    private readonly IUsersApplicationServices _usersApplicationServices;
+    private readonly IUsersConnectedServices _usersApplicationServices;
 
-    public ProjectsApplicationServices(IProjectsUnitOfWork uow, IUsersApplicationServices usersApplicationServices)
+    public ProjectsApplicationServices(IProjectsUnitOfWork uow, IUsersConnectedServices usersApplicationServices)
     {
         _uow = uow;
         _usersApplicationServices = usersApplicationServices;
@@ -23,14 +24,14 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
     {
         IQueryable<Project?> queryProjects = _uow.ProjectRepository.GetAllProjectsReadOnly();
 
-        IQueryable<ResumedProjectDTO> query = (from Project in queryProjects
-                                               select new ResumedProjectDTO
-                                               {
-                                                   ProjectId = Project.ProjectId,
-                                                   Name = Project.Name,
-                                                   UserId = Project.UserId,
-                                                   Description = Project.Description
-                                               });
+        IQueryable<ResumedProjectDTO> query = from Project in queryProjects
+                                              select new ResumedProjectDTO
+                                              {
+                                                  ProjectId = Project.ProjectId,
+                                                  Name = Project.Name,
+                                                  UserId = Project.UserId,
+                                                  Description = Project.Description
+                                              };
 
         return query;
 
@@ -71,7 +72,7 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
     public async Task UpdateProject(FullProjectDTO _UpdateProject, bool _Commit = false)
     {
         if (_UpdateProject == null)
-            throw new ArgumentNullException(nameof(_UpdateProject), "O objeto de usuário para atualização não pode ser nulo.");
+            throw new ArgumentNullException(nameof(_UpdateProject), "O objeto de projeto para atualização não pode ser nulo.");
 
         Project projectToUpdate = await _uow.ProjectRepository.GetProjectById(_UpdateProject.ProjectId) ?? throw new NullReferenceException("Selecione um projeto válido para realizar o update!");
 
@@ -86,8 +87,43 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
         ValidateModel(projectToUpdate);
 
         if (_Commit)
-            await _uow.ProjectRepository.CommitChanges();
+            await _uow.SaveChangesAsync();
     }
+
+    public async Task DeleteProjectsByUserId(Guid _UserId)
+    {
+        try
+        {
+            if (!ValidateGuid(_UserId))
+                throw new Exception("Informe um usuário válido!");
+
+            List<Project> Projects = await _uow.ProjectRepository.GetProjectsByUserId(_UserId).ToListAsync();
+
+            if(Projects.Count > 0)
+                _uow.ProjectRepository.DeleteProjects(Projects);
+
+            await _uow.SaveChangesAsync();
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task DeleteProject(Guid _ProjectId, bool _Commit)
+    {
+        if (!ValidateGuid(_ProjectId))
+            throw new Exception("O Id do projeto informado é inválido!");
+
+        Project projectToDelete = await _uow.ProjectRepository.GetProjectById(_ProjectId) ?? throw new NullReferenceException("Selecione um projeto válido para excluir!");
+
+        _uow.ProjectRepository.DeleteProject(projectToDelete);
+
+        if (_Commit)
+            await _uow.SaveChangesAsync();
+    }
+
 
     #endregion
 
@@ -99,6 +135,7 @@ public sealed class ProjectsApplicationServices : BaseApplicationServices, IProj
         if (Equals(Project, null))
             throw new Exception("Informe os dados do seu projeto!");
     }
+
 
     #endregion
 

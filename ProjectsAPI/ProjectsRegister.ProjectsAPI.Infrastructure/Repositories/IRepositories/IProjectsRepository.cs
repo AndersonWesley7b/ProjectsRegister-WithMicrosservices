@@ -11,9 +11,16 @@ public interface IProjectsRepository
 
     Task<Project?> GetProjectByIdReadOnly(Guid _Id);
 
+    IQueryable<Project> GetProjectsByUserId(Guid _UserId);
+
+    IQueryable<Project> GetProjectsByUserIdReadOnly(Guid _UserId);
+
+    Task<bool> CheckProjectExists(Guid _Id);
+
     Task AddProject(Project _Project);
 
     void DeleteProject(Project _Project);
 
-    Task CommitChanges();
+    void DeleteProjects(List<Project> _Projects);
+
 }

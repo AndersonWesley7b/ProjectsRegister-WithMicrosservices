@@ -14,39 +14,39 @@ public sealed class ProjectsRepository : IProjectsRepository
     }
 
     public IQueryable<Project?> GetAllProjectsReadOnly()
-    {
-        return _context.Projects.AsNoTracking();
-    }
+        => _context.Projects.AsNoTracking();
+
 
     public IQueryable<Project?> GetAllProjects()
-    {
-        return _context.Projects;
-    }
+        => _context.Projects;
+    
 
     public async Task<Project?> GetProjectByIdReadOnly(Guid _Id)
-    {
-        return await _context.Projects.AsNoTracking().FirstOrDefaultAsync(x => x.ProjectId == _Id);
-    }
+        => await _context.Projects.AsNoTracking().FirstOrDefaultAsync(x => x.ProjectId == _Id);
 
 
     public async Task<Project?> GetProjectById(Guid _Id)
-    {
-        return await _context.Projects.FirstOrDefaultAsync(x => x.ProjectId == _Id);
-    }
+        => await _context.Projects.FirstOrDefaultAsync(x => x.ProjectId == _Id);
+
+
+    public IQueryable<Project> GetProjectsByUserId(Guid _UserId)
+        => _context.Projects.Where(x => x.UserId == _UserId);
+
+    
+    public IQueryable<Project> GetProjectsByUserIdReadOnly(Guid _UserId)
+        => _context.Projects.AsNoTracking().Where(x => x.UserId == _UserId);
+
+    public async Task<bool> CheckProjectExists(Guid _Id)
+        =>await _context.Projects.AsNoTracking().AnyAsync(x => x.ProjectId == _Id);
 
     public async Task AddProject(Project _Project)
-    {
-        await _context.Projects.AddAsync(_Project);
-    }
+        => await _context.Projects.AddAsync(_Project);
+
 
     public void DeleteProject(Project _Project)
-    {
-         _context.Projects.Remove(_Project);
-    }
+         => _context.Projects.Remove(_Project);
 
-    public async Task CommitChanges()
-    {
-        await _context.SaveChangesAsync();
-    }
+    public void DeleteProjects(List<Project> _Projects)
+         => _context.Projects.RemoveRange(_Projects);
 
 }

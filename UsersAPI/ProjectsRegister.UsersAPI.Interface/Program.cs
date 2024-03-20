@@ -4,6 +4,8 @@ using ProjectsRegister.UsersAPI.Infrastructure.Repositories;
 using ProjectsRegister.UsersAPI.Infrastructure.Repositories.IRepositories;
 using ProjectsRegister.UsersAPI.Services.ApplicationServices;
 using ProjectsRegister.UsersAPI.Services.ApplicationServices.IApplicationServices;
+using ProjectsRegister.UsersAPI.Services.ConnectedServices;
+using ProjectsRegister.UsersAPI.Services.ConnectedServices.IConnectedServices;
 using UsersAPI.Infraestructure.Context;
 using UsersRegister.UsersAPI.Infrastructure.UnitOfWork;
 
@@ -46,6 +48,13 @@ public class Program
         #endregion
 
         #region MicrosservicesInjection
+
+        builder.Services.AddHttpClient<IProjectsConnectedServices, ProjectsConnectedServices>(c =>
+        {
+            var baseAddress = builder.Configuration["ServiceUrls:ProjectsAPI"];
+            c.BaseAddress = baseAddress != null ? new Uri(baseAddress) : null;
+        });
+
         #endregion
 
         builder.Services.AddControllers();

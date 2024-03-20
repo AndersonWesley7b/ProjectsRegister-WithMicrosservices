@@ -13,4 +13,7 @@ public class BaseApplicationServices
                 throw new Exception(validationResults.Count > 0 ? validationResults.First().ErrorMessage : string.Empty);
             }
     }
+
+    protected static bool ValidateGuid(Guid guid)
+        => guid != Guid.Empty;
 }

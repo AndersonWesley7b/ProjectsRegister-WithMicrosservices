@@ -6,6 +6,8 @@ using ProjectsRegister.ProjectsAPI.Infrastructure.UnitOfWork;
 using ProjectsRegister.ProjectsAPI.Infrastructure.UnitOfWork.IUnitOfWork;
 using ProjectsRegister.ProjectsAPI.Services.ApplicationServices;
 using ProjectsRegister.ProjectsAPI.Services.ApplicationServices.IApplicationServices;
+using ProjectsRegister.ProjectsAPI.Services.ConnectedServices;
+using ProjectsRegister.ProjectsAPI.Services.ConnectedServices.IConnectedServices;
 
 namespace ProjectsRegister.ProjectsAPI.Interface
 {
@@ -47,7 +49,7 @@ namespace ProjectsRegister.ProjectsAPI.Interface
 
             #region MicrosservicesInjection
 
-            builder.Services.AddHttpClient<IUsersApplicationServices, UsersApplicationServices>(c =>
+            builder.Services.AddHttpClient<IUsersConnectedServices, UsersConnectedServices>(c =>
             {
                 var baseAddress = builder.Configuration["ServiceUrls:UsersAPI"];
                 c.BaseAddress = baseAddress != null ? new Uri(baseAddress) : null;

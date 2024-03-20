@@ -9,7 +9,9 @@ public interface IUsersApplicationServices
 
     Task UpdateUser(FullUserDTO _NewUser, bool _Commit);
 
-    Task <bool>CheckUserExists(Guid _UserId);
+    Task DeleteUser(Guid _UserId, bool _Commit);
+
+    Task<bool>CheckUserExists(Guid _UserId);
 
     Task <string> GetUserNameByIdReadOnly(Guid _UserId);
 }
